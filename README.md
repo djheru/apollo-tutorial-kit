@@ -1,4 +1,6 @@
 # apollo-tutorial-kit (formerly apollo-starter-kit)
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/apollographql/apollo-tutorial-kit.svg)](https://greenkeeper.io/)
 **Note: The Tutorial uses Apollo Server v0.1, which is not the current version. To get to the current version, follow the tutorial, and then update following this [migration guide](http://dev.apollodata.com/tools/apollo-server/migration.html).**
 
 Starting point for the Apollo GraphQL Server tutorial.
