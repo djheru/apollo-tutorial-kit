@@ -1,7 +1,9 @@
 import Sequelize from 'sequelize';
+import Mongoose from 'mongoose';
 import casual from 'casual';
 import _ from 'lodash';
 
+// Sequelize
 const db = new Sequelize('blog', null, null, {
 	dialect: 'sqlite',
 	storage: './blog.sqlite'
@@ -20,6 +22,15 @@ const PostModel = db.define('post', {
 AuthorModel.hasMany(PostModel);
 PostModel.belongsTo(AuthorModel);
 
+// Mongoose
+const mongo = Mongoose.connect('mongodb://localhost/graphql-views');
+const ViewSchema = Mongoose.Schema({
+	postId: Number,
+	views: Number
+});
+const View = Mongoose.model('views', ViewSchema);
+
+// Seed the db
 casual.seed(123);
 db.sync({ force: true }).then(() => {
 	_.times(10, () => {
@@ -32,11 +43,14 @@ db.sync({ force: true }).then(() => {
 				title: `A post by ${author.firstName}`,
 				text: casual.sentences(3),
 			});
-		});
+		})
+		.then((post) => {
+			return View.update({postId: post.id}, {views: casual.integer(1, 100)}, {upsert: true});
+		})
 	});
 });
 
 const Author = db.models.author;
 const Post = db.models.post;
 
-export { Author, Post };
+export { Author, Post, View };
